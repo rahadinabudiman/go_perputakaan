@@ -4,6 +4,7 @@ import (
 	"go_perpustakaan/lib/database"
 	"go_perpustakaan/models"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -44,6 +45,12 @@ func CreateBukuController(c echo.Context) error {
 	buku := models.Buku{}
 	c.Bind(&buku)
 
+	if err := c.Validate(buku); err != nil {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: err.Error(),
+		})
+	}
+
 	buku, err := database.CreateBuku(buku)
 
 	if err != nil {
@@ -59,12 +66,18 @@ func CreateBukuController(c echo.Context) error {
 }
 
 func UpdateBukuController(c echo.Context) error {
-	id := c.Param("id")
+	id, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: err.Error(),
+		})
+	}
 
 	buku := models.Buku{}
 	c.Bind(&buku)
 
-	buku, err := database.UpdateBuku(buku, id)
+	buku, err = database.UpdateBuku(buku, id)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{

@@ -8,4 +8,5 @@ type Buku struct {
 	Penulis      string `json:"penulis" form:"penulis"`
 	Tahun_terbit string `json:"tahun_terbit" form:"tahun_terbit"`
 	ISBN         int    `json:"isbn" form:"isbn"`
+	Stock        int    `json:"stock" form:"stock" gorm:"type:enum('0', '1');default:'0'; not-null"`
 }

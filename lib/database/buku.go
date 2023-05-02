@@ -24,12 +24,22 @@ func CreateBuku(buku models.Buku) (models.Buku, error) {
 	return buku, nil
 }
 
-func UpdateBuku(buku models.Buku, id any) (models.Buku, error) {
+func UpdateBuku(buku models.Buku, id int) (models.Buku, error) {
 	err := config.DB.Table("bukus").Where("id = ?", id).Updates(&buku).Error
 
 	if err != nil {
 		return models.Buku{}, err
 	}
+	return buku, nil
+}
+
+func UpdateBukuStock(buku *models.Buku, id uint) (*models.Buku, error) {
+	err := config.DB.Table("bukus").Where("id = ?", id).Updates(models.Buku{Stock: buku.Stock}).Error
+
+	if err != nil {
+		return nil, err
+	}
+
 	return buku, nil
 }
 

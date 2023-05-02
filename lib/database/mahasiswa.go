@@ -34,7 +34,7 @@ func CreateMahasiswa(mahasiswa models.Mahasiswa) (models.Mahasiswa, error) {
 	return mahasiswa, nil
 }
 
-func UpdateMahasiswa(mahasiswa models.Mahasiswa, id any) (models.Mahasiswa, error) {
+func UpdateMahasiswa(mahasiswa models.Mahasiswa, id int) (models.Mahasiswa, error) {
 	err := config.DB.Table("mahasiswas").Where("id = ?", id).Updates(&mahasiswa).Error
 
 	if err != nil {

@@ -17,6 +17,12 @@ func GetAdministratorsController(c echo.Context) error {
 		})
 	}
 
+	if len(admins) == 0 {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: "Data tidak ada",
+		})
+	}
+
 	return c.JSON(http.StatusOK, models.Response{
 		Message: "success get all administrator",
 		Data:    admins,
@@ -43,6 +49,12 @@ func GetAdministratorController(c echo.Context) error {
 func CreateAdministratorController(c echo.Context) error {
 	admin := models.Administrator{}
 	c.Bind(&admin)
+
+	if err := c.Validate(admin); err != nil {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: err.Error(),
+		})
+	}
 
 	admin, err := database.CreateAdministrator(admin)
 
