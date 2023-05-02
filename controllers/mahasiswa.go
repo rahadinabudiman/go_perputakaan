@@ -8,8 +8,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func GetAdministratorsController(c echo.Context) error {
-	admins, err := database.GetAdministrator()
+func GetMahasiswaController(c echo.Context) error {
+	mahasiswa, err := database.GetMahasiswa()
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -17,16 +17,16 @@ func GetAdministratorsController(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, models.Response{
-		Message: "success get all administrator",
-		Data:    admins,
+	return c.JSON(http.StatusBadRequest, models.Response{
+		Message: "success get all mahasiswa",
+		Data:    mahasiswa,
 	})
 }
 
-func GetAdministratorController(c echo.Context) error {
+func GetMahasiswaByIdController(c echo.Context) error {
 	id := c.Param("id")
 
-	admin, err := database.GetAdministratorById(id)
+	mahasiswa, err := database.GetMahasiswaById(id)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -35,16 +35,16 @@ func GetAdministratorController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success get administrator",
-		Data:    admin,
+		Message: "success get mahasiswa",
+		Data:    mahasiswa,
 	})
 }
 
-func CreateAdministratorController(c echo.Context) error {
-	admin := models.Administrator{}
-	c.Bind(&admin)
+func CreateMahasiswaController(c echo.Context) error {
+	mahasiswa := models.Mahasiswa{}
+	c.Bind(&mahasiswa)
 
-	admin, err := database.CreateAdministrator(admin)
+	mahasiswa, err := database.CreateMahasiswa(mahasiswa)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -53,18 +53,18 @@ func CreateAdministratorController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success create administrator",
-		Data:    admin,
+		Message: "success create mahasiswa",
+		Data:    mahasiswa,
 	})
 }
 
-func UpdateAdministratorController(c echo.Context) error {
+func UpdateMahasiswaController(c echo.Context) error {
 	id := c.Param("id")
 
-	admin := models.Administrator{}
-	c.Bind(&admin)
+	mahasiswa := models.Mahasiswa{}
+	c.Bind(&mahasiswa)
 
-	admin, err := database.UpdateAdministrator(admin, id)
+	mahasiwa, err := database.UpdateMahasiswa(mahasiswa, id)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -73,15 +73,15 @@ func UpdateAdministratorController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success update administrator",
-		Data:    admin,
+		Message: "success update mahasiswa",
+		Data:    mahasiwa,
 	})
 }
 
-func DeleteAdministratorController(c echo.Context) error {
+func DeleteMahasiswaController(c echo.Context) error {
 	id := c.Param("id")
 
-	_, err := database.DeleteAdministrator(id)
+	_, err := database.DeleteMahasiswa(id)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -90,6 +90,6 @@ func DeleteAdministratorController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success delete administrator",
+		Message: "success delete mahasiswa",
 	})
 }

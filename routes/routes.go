@@ -11,5 +11,10 @@ func New() *echo.Echo {
 
 	administrator := e.Group("/administrator")
 	administrator.GET("", controllers.GetAdministratorsController)
+	administrator.GET("/:id", controllers.GetAdministratorController)
+	administrator.POST("", controllers.CreateAdministratorController)
+	administrator.PUT("/:id", controllers.UpdateAdministratorController)
+	administrator.DELETE("/:id", controllers.DeleteAdministratorController)
+
 	return e
 }

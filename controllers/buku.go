@@ -8,8 +8,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func GetAdministratorsController(c echo.Context) error {
-	admins, err := database.GetAdministrator()
+func GetBukusController(c echo.Context) error {
+	bukus, err := database.GetBuku()
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -18,15 +18,15 @@ func GetAdministratorsController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success get all administrator",
-		Data:    admins,
+		Message: "success get all buku",
+		Data:    bukus,
 	})
 }
 
-func GetAdministratorController(c echo.Context) error {
+func GetBukuController(c echo.Context) error {
 	id := c.Param("id")
 
-	admin, err := database.GetAdministratorById(id)
+	buku, err := database.GetBukuById(id)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -35,16 +35,16 @@ func GetAdministratorController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success get administrator",
-		Data:    admin,
+		Message: "success get buku",
+		Data:    buku,
 	})
 }
 
-func CreateAdministratorController(c echo.Context) error {
-	admin := models.Administrator{}
-	c.Bind(&admin)
+func CreateBukuController(c echo.Context) error {
+	buku := models.Buku{}
+	c.Bind(&buku)
 
-	admin, err := database.CreateAdministrator(admin)
+	buku, err := database.CreateBuku(buku)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -53,18 +53,18 @@ func CreateAdministratorController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success create administrator",
-		Data:    admin,
+		Message: "success create buku",
+		Data:    buku,
 	})
 }
 
-func UpdateAdministratorController(c echo.Context) error {
+func UpdateBukuController(c echo.Context) error {
 	id := c.Param("id")
 
-	admin := models.Administrator{}
-	c.Bind(&admin)
+	buku := models.Buku{}
+	c.Bind(&buku)
 
-	admin, err := database.UpdateAdministrator(admin, id)
+	buku, err := database.UpdateBuku(buku, id)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -73,15 +73,15 @@ func UpdateAdministratorController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success update administrator",
-		Data:    admin,
+		Message: "success update buku",
+		Data:    buku,
 	})
 }
 
-func DeleteAdministratorController(c echo.Context) error {
+func DeleteBukuController(c echo.Context) error {
 	id := c.Param("id")
 
-	_, err := database.DeleteAdministrator(id)
+	_, err := database.DeleteBuku(id)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -90,6 +90,6 @@ func DeleteAdministratorController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success delete administrator",
+		Message: "success delete buku",
 	})
 }
