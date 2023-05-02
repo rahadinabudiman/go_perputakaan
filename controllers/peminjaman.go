@@ -57,7 +57,7 @@ func CreatePeminjamanController(c echo.Context) error {
 			Message: err.Error(),
 		})
 	}
-	if buku.Stock <= 0 {
+	if buku.Stock < 1 {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: "Buku tidak tersedia",
 		})
