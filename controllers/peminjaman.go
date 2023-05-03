@@ -50,25 +50,6 @@ func CreatePeminjamanController(c echo.Context) error {
 		})
 	}
 
-	// Kurangi Stock Buku Saat Berhasil Dipinjam
-	buku, err := database.GetBukuById(peminjaman.BukuID)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, models.Response{
-			Message: err.Error(),
-		})
-	}
-	if buku.Stock < 1 {
-		return c.JSON(http.StatusBadRequest, models.Response{
-			Message: "Buku tidak tersedia",
-		})
-	}
-	buku.Stock--
-	if _, err := database.UpdateBuku(buku, peminjaman.BukuID); err != nil {
-		return c.JSON(http.StatusBadRequest, models.Response{
-			Message: err.Error(),
-		})
-	}
-
 	// Ubah status mahasiswa
 	mahasiswa, err := database.GetMahasiswaById(peminjaman.MahasiswaID)
 	if err != nil {
@@ -81,8 +62,29 @@ func CreatePeminjamanController(c echo.Context) error {
 			Message: "Mahasiswa sudah meminjam buku",
 		})
 	}
+
+	// Kurangi Stock Buku Saat Berhasil Dipinjam
+	buku, err := database.GetBukuById(peminjaman.BukuID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: err.Error(),
+		})
+	}
+	if buku.Stock < 1 {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: "Buku tidak tersedia",
+		})
+	}
+
 	mahasiswa.Status = "1"
 	if _, err := database.UpdateMahasiswa(mahasiswa, peminjaman.MahasiswaID); err != nil {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: err.Error(),
+		})
+	}
+
+	buku.Stock--
+	if _, err := database.UpdateBukuStock(buku, peminjaman.BukuID); err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
 		})

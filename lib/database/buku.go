@@ -24,22 +24,22 @@ func CreateBuku(buku models.Buku) (models.Buku, error) {
 	return buku, nil
 }
 
-func UpdateBuku(buku models.Buku, id any) (models.Buku, error) {
-	result := config.DB.Model(&models.Buku{}).Where("id = ?", id).Updates(models.Buku{Judul: buku.Judul, Penulis: buku.Penulis, Tahun_terbit: buku.Tahun_terbit, ISBN: buku.ISBN, Stock: buku.Stock})
-	if result.Error != nil {
-		return models.Buku{}, result.Error
-	}
-	if result.RowsAffected == 0 {
-		return models.Buku{}, result.Error
-	}
+func UpdateBuku(buku models.Buku, id int) (models.Buku, error) {
+	err := config.DB.Table("bukus").Where("id = ?", id).Updates(&buku).Error
 
-	updatedBuku := models.Buku{}
-	err := config.DB.Where("id = ?", id).Find(&updatedBuku).Error
 	if err != nil {
 		return models.Buku{}, err
 	}
+	return buku, nil
+}
 
-	return updatedBuku, nil
+func UpdateBukuStock(buku models.Buku, id int) (models.Buku, error) {
+	err := config.DB.Table("bukus").Where("id = ?", id).Save(&buku).Error
+
+	if err != nil {
+		return models.Buku{}, err
+	}
+	return buku, nil
 }
 
 func GetBukuById(id any) (models.Buku, error) {
