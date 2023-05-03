@@ -55,4 +55,6 @@ func InitialMigration() {
 	DB.AutoMigrate(&models.Buku{})
 	DB.AutoMigrate(&models.Peminjaman{})
 	DB.AutoMigrate(&models.Administrator{})
+	DB.AutoMigrate(&models.Pengembalian{})
+
 }

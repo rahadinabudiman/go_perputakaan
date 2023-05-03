@@ -43,5 +43,12 @@ func New() *echo.Echo {
 	peminjaman.PUT("/:id", controllers.UpdatePeminjamanController)
 	peminjaman.DELETE("/:id", controllers.DeletePeminjamanController)
 
+	pengembalian := e.Group("/pengembalian")
+	pengembalian.GET("", controllers.GetPengembalianController)
+	pengembalian.GET("/:id", controllers.GetPengembalianByIdController)
+	pengembalian.POST("", controllers.CreatePengembalianController)
+	pengembalian.PUT("/:id", controllers.UpdatePengembalianController)
+	pengembalian.DELETE("/:id", controllers.DeletePengembalianController)
+
 	return e
 }
