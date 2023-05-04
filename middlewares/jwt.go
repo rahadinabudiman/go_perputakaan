@@ -37,7 +37,11 @@ var IsLoggedIn = middleware.JWTWithConfig(middleware.JWTConfig{
 	SigningMethod: "HS256",
 	SigningKey:    []byte(constants.SECRET_JWT),
 	TokenLookup:   "cookie:JWTCookie",
-})
+	ErrorHandler: func(err error) error {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized")
+	},
+},
+)
 
 func IsAdmin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
