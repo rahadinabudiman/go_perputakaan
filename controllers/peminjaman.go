@@ -102,8 +102,6 @@ func CreatePeminjamanController(c echo.Context) error {
 		Message: "success create peminjaman",
 		Data: map[string]interface{}{
 			"peminjaman": peminjaman,
-			"mahasiswa":  mahasiswa,
-			"buku":       buku,
 		},
 	})
 }

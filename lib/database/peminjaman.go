@@ -45,6 +45,26 @@ func UpdatePeminjaman(peminjaman models.Peminjaman, id any) (models.Peminjaman, 
 	return peminjaman, nil
 }
 
+func GetPeminjamanBy2Id(mahasiswa_id, buku_id any) (peminjaman models.Peminjaman, err error) {
+	err = config.DB.Table("peminjamen").Where("mahasiswa_id = ? AND buku_id = ?", mahasiswa_id, buku_id).Find(&peminjaman).Error
+
+	if err != nil {
+		return models.Peminjaman{}, err
+	}
+
+	return peminjaman, nil
+}
+
+func UpdateStatusPeminjaman(peminjaman models.Peminjaman, id any) (models.Peminjaman, error) {
+	err := config.DB.Table("peminjamen").Where("id = ?", id).Updates(&peminjaman).Error
+
+	if err != nil {
+		return models.Peminjaman{}, err
+	}
+
+	return peminjaman, nil
+}
+
 func DeletePeminjaman(id any) (interface{}, error) {
 	err := config.DB.Where("id = ?", id).Delete(&models.Peminjaman{}).Error
 

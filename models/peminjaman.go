@@ -14,4 +14,5 @@ type Peminjaman struct {
 	Buku            Buku      `json:"buku"`
 	Tanggal_pinjam  time.Time `json:"tanggal_pinjam" form:"tanggal_pinjam"`
 	Tanggal_kembali time.Time `json:"tanggal_kembali" form:"tanggal_kembali"`
+	Status          string    `json:"status" form:"status" gorm:"type:enum('0', '1');default:'0'; not-null"`
 }
