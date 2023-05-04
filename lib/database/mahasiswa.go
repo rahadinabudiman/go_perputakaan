@@ -53,3 +53,13 @@ func DeleteMahasiswa(id any) (interface{}, error) {
 
 	return "Mahasiswa behasil dihapus", nil
 }
+
+func LoginMahasiswa(mahasiswa models.Mahasiswa) (models.Mahasiswa, error) {
+	err := config.DB.Where("email = ? AND password = ?", mahasiswa.Email, mahasiswa.Password).First(&mahasiswa).Error
+
+	if err != nil {
+		return models.Mahasiswa{}, nil
+	}
+
+	return mahasiswa, nil
+}

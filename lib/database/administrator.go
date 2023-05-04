@@ -54,3 +54,13 @@ func DeleteAdministrator(id any) (interface{}, error) {
 
 	return "Administrator behasil dihapus", nil
 }
+
+func LoginAdministrator(admin models.Administrator) (models.Administrator, error) {
+	err := config.DB.Where("email = ? AND password = ?", admin.Email, admin.Password).First(&admin).Error
+
+	if err != nil {
+		return models.Administrator{}, nil
+	}
+
+	return admin, nil
+}
