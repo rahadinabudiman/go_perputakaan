@@ -6,7 +6,7 @@ import (
 	"go_perpustakaan/models"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo"
 )
 
 func New() *echo.Echo {
@@ -20,9 +20,9 @@ func New() *echo.Echo {
 
 	// Mahasiswa Routes
 	mahasiswa := e.Group("/mahasiswa")
-	mahasiswa.POST("/login", controllers.LoginMahasiswaController, m.IsLoggedIn) // Login Mahasiswa ex : {local}/mahasiswa/login
-	mahasiswa.POST("", controllers.CreateMahasiswaController, m.IsLoggedIn)      // Create Mahasiswa
-	mahasiswa.PUT("/:id", controllers.UpdateMahasiswaController, m.IsLoggedIn)   // Edit Mahasiswa
+	mahasiswa.POST("/login", controllers.LoginMahasiswaController)             // Login Mahasiswa ex : {local}/mahasiswa/login
+	mahasiswa.POST("", controllers.CreateMahasiswaController)                  // Create Mahasiswa
+	mahasiswa.PUT("/:id", controllers.UpdateMahasiswaController, m.IsLoggedIn) // Edit Mahasiswa
 
 	mahasiswa.GET("/buku", controllers.GetBukusController, m.IsLoggedIn)    // Get All Buku
 	mahasiswa.GET("/buku/:id", controllers.GetBukuController, m.IsLoggedIn) // Get Buku by ID
@@ -34,10 +34,10 @@ func New() *echo.Echo {
 	// Administrator Routes
 	administrator := e.Group("/administrator")
 	// Administrator Data Routes
-	administrator.POST("/login", controllers.LoginAdministratorController, m.IsLoggedIn, m.IsAdmin)
+	administrator.POST("", controllers.CreateAdministratorController)
+	administrator.POST("/login", controllers.LoginAdministratorController)
 	administrator.GET("", controllers.GetAdministratorsController, m.IsLoggedIn, m.IsAdmin)
 	administrator.GET("/:id", controllers.GetAdministratorController, m.IsLoggedIn, m.IsAdmin)
-	administrator.POST("", controllers.CreateAdministratorController, m.IsLoggedIn, m.IsAdmin)
 	administrator.PUT("/:id", controllers.UpdateAdministratorController, m.IsLoggedIn, m.IsAdmin)
 	administrator.DELETE("/:id", controllers.DeleteAdministratorController, m.IsLoggedIn, m.IsAdmin)
 
