@@ -5,7 +5,7 @@ import (
 	"go_perpustakaan/models"
 	"net/http"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo"
 )
 
 func GetPeminjamansController(c echo.Context) error {
