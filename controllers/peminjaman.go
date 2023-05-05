@@ -4,6 +4,7 @@ import (
 	"go_perpustakaan/lib/database"
 	"go_perpustakaan/models"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo"
 )
@@ -14,6 +15,12 @@ func GetPeminjamansController(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
+		})
+	}
+
+	if len(peminjaman) == 0 {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: "Data tidak ada",
 		})
 	}
 
@@ -44,6 +51,11 @@ func CreatePeminjamanController(c echo.Context) error {
 	peminjaman := models.Peminjaman{}
 	c.Bind(&peminjaman)
 
+	// tambahkan deklarasi tanggal dan jam sekarang
+	now := time.Now()
+	peminjaman.Tanggal_pinjam = now
+	peminjaman.Tanggal_kembali = now.AddDate(0, 0, 7) // tambahkan 7 hari dari tanggal sekarang
+
 	if err := c.Validate(peminjaman); err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
@@ -51,7 +63,7 @@ func CreatePeminjamanController(c echo.Context) error {
 	}
 
 	// Ubah status mahasiswa
-	mahasiswa, err := database.GetMahasiswaById(peminjaman.MahasiswaID)
+	mahasiswa, err := database.GetMahasiswaByNIM(peminjaman.NIM)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
@@ -64,7 +76,7 @@ func CreatePeminjamanController(c echo.Context) error {
 	}
 
 	// Kurangi Stock Buku Saat Berhasil Dipinjam
-	buku, err := database.GetBukuById(peminjaman.BukuID)
+	buku, err := database.GetBukuByJudul(peminjaman.Judul)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
@@ -77,14 +89,14 @@ func CreatePeminjamanController(c echo.Context) error {
 	}
 
 	mahasiswa.Status = "1"
-	if _, err := database.UpdateMahasiswa(mahasiswa, peminjaman.MahasiswaID); err != nil {
+	if _, err := database.UpdateMahasiswaByNIM(mahasiswa, peminjaman.NIM); err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
 		})
 	}
 
 	buku.Stock--
-	if _, err := database.UpdateBukuStock(buku, peminjaman.BukuID); err != nil {
+	if _, err := database.UpdateBukuStockTitle(buku, peminjaman.Judul); err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
 		})
@@ -98,11 +110,15 @@ func CreatePeminjamanController(c echo.Context) error {
 		})
 	}
 
+	peminjamanresponse := models.PeminjamanResponse{
+		NIM:             peminjaman.NIM,
+		Judul:           peminjaman.Judul,
+		Tanggal_kembali: peminjaman.Tanggal_kembali,
+	}
+
 	return c.JSON(http.StatusOK, models.Response{
 		Message: "success create peminjaman",
-		Data: map[string]interface{}{
-			"peminjaman": peminjaman,
-		},
+		Data:    peminjamanresponse,
 	})
 }
 

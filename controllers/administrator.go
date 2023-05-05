@@ -65,7 +65,7 @@ func CreateAdministratorController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success create administrator",
+		Message: "success create admin",
 		Data:    admin,
 	})
 }

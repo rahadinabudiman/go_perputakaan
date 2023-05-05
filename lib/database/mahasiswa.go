@@ -24,6 +24,16 @@ func GetMahasiswaById(id any) (mahasiswa models.Mahasiswa, err error) {
 	return mahasiswa, nil
 }
 
+func GetMahasiswaByNIM(nim any) (mahasiswa models.Mahasiswa, err error) {
+	err = config.DB.Table("mahasiswas").Where("nim = ?", nim).Find(&mahasiswa).Error
+
+	if err != nil {
+		return models.Mahasiswa{}, err
+	}
+
+	return mahasiswa, nil
+}
+
 func CreateMahasiswa(mahasiswa models.Mahasiswa) (models.Mahasiswa, error) {
 	err := config.DB.Create(&mahasiswa).Error
 
@@ -44,6 +54,16 @@ func UpdateMahasiswa(mahasiswa models.Mahasiswa, id int) (models.Mahasiswa, erro
 	return mahasiswa, nil
 }
 
+func UpdateMahasiswaByNIM(mahasiswa models.Mahasiswa, nim any) (models.Mahasiswa, error) {
+	err := config.DB.Table("mahasiswas").Where("nim = ?", nim).Updates(&mahasiswa).Error
+
+	if err != nil {
+		return models.Mahasiswa{}, err
+	}
+
+	return mahasiswa, nil
+}
+
 func DeleteMahasiswa(id any) (interface{}, error) {
 	err := config.DB.Where("id = ?", id).Delete(&models.Mahasiswa{}).Error
 
@@ -55,7 +75,7 @@ func DeleteMahasiswa(id any) (interface{}, error) {
 }
 
 func LoginMahasiswa(mahasiswa models.Mahasiswa) (models.Mahasiswa, error) {
-	err := config.DB.Where("email = ? AND password = ?", mahasiswa.Email, mahasiswa.Password).First(&mahasiswa).Error
+	err := config.DB.Where("nim = ? AND password = ?", mahasiswa.NIM, mahasiswa.Password).First(&mahasiswa).Error
 
 	if err != nil {
 		return models.Mahasiswa{}, nil

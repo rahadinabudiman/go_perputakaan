@@ -18,6 +18,12 @@ func GetMahasiswaController(c echo.Context) error {
 		})
 	}
 
+	if len(mahasiswa) == 0 {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: "Data tidak ada",
+		})
+	}
+
 	return c.JSON(http.StatusOK, models.Response{
 		Message: "success get all mahasiswa",
 		Data:    mahasiswa,

@@ -42,10 +42,30 @@ func UpdateBukuStock(buku models.Buku, id int) (models.Buku, error) {
 	return buku, nil
 }
 
+func UpdateBukuStockTitle(buku models.Buku, judul string) (models.Buku, error) {
+	err := config.DB.Table("bukus").Where("judul = ?", judul).Save(&buku).Error
+
+	if err != nil {
+		return models.Buku{}, err
+	}
+	return buku, nil
+}
+
 func GetBukuById(id any) (models.Buku, error) {
 	var buku models.Buku
 
 	err := config.DB.Where("id = ?", id).First(&buku).Error
+
+	if err != nil {
+		return models.Buku{}, err
+	}
+	return buku, nil
+}
+
+func GetBukuByJudul(judul string) (models.Buku, error) {
+	var buku models.Buku
+
+	err := config.DB.Where("judul = ?", judul).First(&buku).Error
 
 	if err != nil {
 		return models.Buku{}, err

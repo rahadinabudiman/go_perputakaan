@@ -18,6 +18,12 @@ func GetBukusController(c echo.Context) error {
 		})
 	}
 
+	if len(bukus) == 0 {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: "Data tidak ada",
+		})
+	}
+
 	return c.JSON(http.StatusOK, models.Response{
 		Message: "success get all buku",
 		Data:    bukus,

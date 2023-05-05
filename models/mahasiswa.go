@@ -11,7 +11,7 @@ import (
 type Mahasiswa struct {
 	gorm.Model
 	Nama     string `json:"nama" form:"nama"`
-	NIM      string `json:"nim" form:"nim"`
+	NIM      int    `json:"nim" form:"nim"`
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
 	Prodi    string `json:"prodi" form:"prodi"`
@@ -22,7 +22,7 @@ type Mahasiswa struct {
 // For Response
 type MahasiswaResponse struct {
 	gorm.Model
-	NIM   string `json:"nim" form:"nim"`
+	NIM   int    `json:"nim" form:"nim"`
 	Email string `json:"email" form:"email"`
 	Prodi string `json:"prodi" form:"prodi"`
 }
@@ -30,7 +30,7 @@ type MahasiswaResponse struct {
 // For JWT Only
 type MahasiswaResponses struct {
 	ID    uint   `json:"id" form:"id"`
-	NIM   string `json:"nim" form:"nim"`
+	NIM   int    `json:"nim" form:"nim"`
 	Email string `json:"email" form:"email"`
 	Token string `json:"token" form:"token"`
 }

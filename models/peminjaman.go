@@ -8,11 +8,19 @@ import (
 
 type Peminjaman struct {
 	gorm.Model
-	MahasiswaID     int       `json:"mahasiswa_id" form:"mahasiswa_id"`
+	NIM             int       `json:"nim" form:"nim"`
 	Mahasiswa       Mahasiswa `json:"mahasiswa"`
-	BukuID          int       `json:"buku_id" form:"buku_id"`
+	Judul           string    `json:"judul" form:"judul"`
 	Buku            Buku      `json:"buku"`
 	Tanggal_pinjam  time.Time `json:"tanggal_pinjam" form:"tanggal_pinjam"`
 	Tanggal_kembali time.Time `json:"tanggal_kembali" form:"tanggal_kembali"`
 	Status          string    `json:"status" form:"status" gorm:"type:enum('0', '1');default:'0'; not-null"`
+}
+
+// For Response Peminjaman
+
+type PeminjamanResponse struct {
+	NIM             int       `json:"nim" form:"nim"`
+	Judul           string    `json:"judul" form:"judul"`
+	Tanggal_kembali time.Time `json:"tanggal_kembali" form:"tanggal_kembali"`
 }

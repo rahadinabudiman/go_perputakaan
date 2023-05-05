@@ -18,6 +18,12 @@ func GetPengembalianController(c echo.Context) error {
 		})
 	}
 
+	if len(pengembalian) == 0 {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: "Data tidak ada",
+		})
+	}
+
 	return c.JSON(http.StatusOK, models.Response{
 		Message: "success get all pengembalian",
 		Data:    pengembalian,
@@ -52,7 +58,7 @@ func CreatePengembalianController(c echo.Context) error {
 	}
 
 	// Check Apakah Mahasiswa Tersebut Meminjam Atau Tidak
-	peminjaman, err := database.GetPeminjamanBy2Id(pengembalian.MahasiswaID, pengembalian.BukuID)
+	peminjaman, err := database.GetPeminjamanByTitleNIM(pengembalian.NIM, pengembalian.Judul)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -76,7 +82,7 @@ func CreatePengembalianController(c echo.Context) error {
 	}
 
 	// Ubah status mahasiswa
-	mahasiswa, err := database.GetMahasiswaById(pengembalian.MahasiswaID)
+	mahasiswa, err := database.GetMahasiswaByNIM(pengembalian.NIM)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
@@ -89,7 +95,7 @@ func CreatePengembalianController(c echo.Context) error {
 	}
 
 	// Kurangi Stock Buku Saat Berhasil Dipinjam
-	buku, err := database.GetBukuById(pengembalian.BukuID)
+	buku, err := database.GetBukuByJudul(pengembalian.Judul)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
@@ -97,14 +103,14 @@ func CreatePengembalianController(c echo.Context) error {
 	}
 
 	mahasiswa.Status = "0"
-	if _, err := database.UpdateMahasiswa(mahasiswa, pengembalian.MahasiswaID); err != nil {
+	if _, err := database.UpdateMahasiswaByNIM(mahasiswa, pengembalian.NIM); err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
 		})
 	}
 
 	buku.Stock++
-	if _, err := database.UpdateBukuStock(buku, pengembalian.BukuID); err != nil {
+	if _, err := database.UpdateBukuStockTitle(buku, pengembalian.Judul); err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
 		})
@@ -118,9 +124,14 @@ func CreatePengembalianController(c echo.Context) error {
 		})
 	}
 
+	pengembalianresponse := models.PengembalianResponse{
+		NIM:   pengembalian.NIM,
+		Judul: pengembalian.Judul,
+	}
+
 	return c.JSON(http.StatusOK, models.Response{
 		Message: "success create pengembalian",
-		Data:    pengembalian,
+		Data:    pengembalianresponse,
 	})
 }
 
