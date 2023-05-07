@@ -6,17 +6,21 @@ import (
 
 type Administrator struct {
 	gorm.Model
-	Nama     string `json:"nama" form:"nama"`
-	Email    string `json:"email" form:"email"`
-	Password string `json:"password" form:"password"`
+	Nama     string `json:"nama" form:"nama" validate:"required"`
+	Email    string `json:"email" form:"email" validate:"required,email"`
+	Password string `json:"password" form:"password" validate:"required"`
 	Role     string `json:"role" form:"role" gorm:"type:enum('Admin', 'Mahasiswa');default:'Admin'; not-null"`
 }
 
 type AdminResponse struct {
-	gorm.Model
 	Nama  string `json:"nama" form:"nama"`
 	Email string `json:"email" form:"email"`
-	Prodi string `json:"prodi" form:"prodi"`
+}
+
+type AdminResponseCreate struct {
+	Nama     string `json:"nama" form:"nama"`
+	Email    string `json:"email" form:"email"`
+	Password string `json:"password" form:"password"`
 }
 
 // For JWT Only

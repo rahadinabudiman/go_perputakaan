@@ -4,9 +4,9 @@ import "github.com/jinzhu/gorm"
 
 type Buku struct {
 	gorm.Model
-	Judul        string `json:"judul" form:"judul"`
-	Penulis      string `json:"penulis" form:"penulis"`
-	Tahun_terbit string `json:"tahun_terbit" form:"tahun_terbit"`
-	ISBN         int    `json:"isbn" form:"isbn"`
-	Stock        int    `json:"stock" form:"stock"`
+	Judul        string `json:"judul" form:"judul" validate:"required"`
+	Penulis      string `json:"penulis" form:"penulis" validate:"required"`
+	Tahun_terbit string `json:"tahun_terbit" form:"tahun_terbit" validate:"required"`
+	ISBN         int    `json:"isbn" form:"isbn" validate:"required"`
+	Stock        int    `json:"stock" form:"stock" validate:"required"`
 }

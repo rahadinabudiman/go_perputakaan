@@ -23,9 +23,17 @@ func GetAdministratorsController(c echo.Context) error {
 		})
 	}
 
+	administratorresp := make([]models.AdminResponse, len(admins))
+	for i, admin := range admins {
+		administratorresp[i] = models.AdminResponse{
+			Nama:  admin.Nama,
+			Email: admin.Email,
+		}
+	}
+
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success get all administrator",
-		Data:    admins,
+		Message: "success get all admin",
+		Data:    administratorresp,
 	})
 }
 
@@ -40,9 +48,14 @@ func GetAdministratorController(c echo.Context) error {
 		})
 	}
 
+	administratorresp := models.AdminResponse{
+		Nama:  admin.Nama,
+		Email: admin.Email,
+	}
+
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success get administrator",
-		Data:    admin,
+		Message: "success create admin",
+		Data:    administratorresp,
 	})
 }
 
@@ -50,13 +63,13 @@ func CreateAdministratorController(c echo.Context) error {
 	admin := models.Administrator{}
 	c.Bind(&admin)
 
-	if err := c.Validate(admin); err != nil {
+	if err := c.Validate(&admin); err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
 		})
 	}
 
-	admin, err := database.CreateAdministrator(admin)
+	admins, err := database.CreateAdministrator(admin)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -64,9 +77,15 @@ func CreateAdministratorController(c echo.Context) error {
 		})
 	}
 
+	administratorresp := models.AdminResponseCreate{
+		Nama:     admins.Nama,
+		Email:    admins.Email,
+		Password: admins.Password,
+	}
+
 	return c.JSON(http.StatusOK, models.Response{
 		Message: "success create admin",
-		Data:    admin,
+		Data:    administratorresp,
 	})
 }
 

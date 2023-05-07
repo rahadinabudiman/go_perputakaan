@@ -24,6 +24,15 @@ func GetMahasiswaController(c echo.Context) error {
 		})
 	}
 
+	mahasiswaresp := make([]models.MahasiswaResponse, len(mahasiswa))
+	for i, mhs := range mahasiswa {
+		mahasiswaresp[i] = models.MahasiswaResponse{
+			NIM:   mhs.NIM,
+			Email: mhs.Email,
+			Prodi: mhs.Prodi,
+		}
+	}
+
 	return c.JSON(http.StatusOK, models.Response{
 		Message: "success get all mahasiswa",
 		Data:    mahasiswa,
@@ -51,7 +60,7 @@ func CreateMahasiswaController(c echo.Context) error {
 	mahasiswa := models.Mahasiswa{}
 	c.Bind(&mahasiswa)
 
-	if err := c.Validate(mahasiswa); err != nil {
+	if err := c.Validate(&mahasiswa); err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
 		})

@@ -23,7 +23,7 @@ func LoginMahasiswaController(c echo.Context) error {
 		})
 	}
 
-	token, err := middlewares.CreateToken(int(mahasiswa.ID), mahasiswa.Email, mahasiswa.Role)
+	token, err := middlewares.CreateTokenMahasiswa(int(mahasiswa.ID), int(mahasiswa.NIM), mahasiswa.Email, mahasiswa.Role)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{

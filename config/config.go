@@ -28,10 +28,10 @@ type Config struct {
 func InitDB() {
 
 	config := Config{
-		DB_Username: "root",
-		DB_Password: "",
+		DB_Username: "r4ha",
+		DB_Password: "kmoonkinan",
 		DB_Port:     "3306",
-		DB_Host:     "localhost",
+		DB_Host:     "192.168.18.23",
 		DB_Name:     "go_perpustakaan",
 	}
 

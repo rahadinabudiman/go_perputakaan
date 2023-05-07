@@ -62,6 +62,14 @@ func CreatePeminjamanController(c echo.Context) error {
 		})
 	}
 
+	// Ambil NIM dari middleware
+	nim := c.Get("nim").(int)
+	if peminjaman.NIM != nim {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: "NIM tidak sama dengan yang login",
+		})
+	}
+
 	// Ubah status mahasiswa
 	mahasiswa, err := database.GetMahasiswaByNIM(peminjaman.NIM)
 	if err != nil {
