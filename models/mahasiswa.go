@@ -1,7 +1,9 @@
 package models
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/jinzhu/gorm"
@@ -10,11 +12,11 @@ import (
 
 type Mahasiswa struct {
 	gorm.Model
-	Nama     string `json:"nama" form:"nama"`
-	NIM      int    `json:"nim" form:"nim"`
-	Email    string `json:"email" form:"email"`
-	Password string `json:"password" form:"password"`
-	Prodi    string `json:"prodi" form:"prodi"`
+	Nama     string `json:"nama" form:"nama" validate:"required"`
+	NIM      int    `json:"nim" form:"nim" validate:"required"`
+	Email    string `json:"email" form:"email" validate:"required,email"`
+	Password string `json:"password" form:"password" validate:"required"`
+	Prodi    string `json:"prodi" form:"prodi" validate:"required"`
 	Role     string `json:"role" form:"role" gorm:"type:enum('Admin', 'Mahasiswa');default:'Mahasiswa'; not-null"`
 	Status   string `json:"status" form:"status" gorm:"type:enum('0', '1');default:'0'; not-null"`
 }
@@ -43,7 +45,14 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 	err := cv.Validators.Struct(i)
 
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		var sb strings.Builder
+		sb.WriteString("Validation error:\n")
+
+		for _, err := range err.(validator.ValidationErrors) {
+			sb.WriteString(fmt.Sprintf("- %s\n", err))
+		}
+
+		return echo.NewHTTPError(http.StatusBadRequest, sb.String())
 	}
 
 	return nil

@@ -13,7 +13,8 @@ func New() *echo.Echo {
 	e := echo.New()
 
 	m.Log(e)
-	e.Validator = &models.CustomValidator{Validators: validator.New()}
+	cv := &models.CustomValidator{Validators: validator.New()}
+	e.Validator = cv
 
 	// All Routes
 	e.GET("/cookie", controllers.GetCookieHandler)
@@ -27,9 +28,9 @@ func New() *echo.Echo {
 	mahasiswa.GET("/buku", controllers.GetBukusController, m.IsLoggedIn)    // Get All Buku
 	mahasiswa.GET("/buku/:id", controllers.GetBukuController, m.IsLoggedIn) // Get Buku by ID
 
-	mahasiswa.POST("/pinjam", controllers.CreatePeminjamanController, m.IsLoggedIn) // Pinjam Buku
+	mahasiswa.POST("/pinjam", controllers.CreatePeminjamanController, m.IsLoggedIn, m.JWTValidator) // Pinjam Buku
 
-	mahasiswa.POST("/kembali", controllers.CreatePengembalianController, m.IsLoggedIn) // Kembalikan Buku
+	mahasiswa.POST("/kembali", controllers.CreatePengembalianController, m.IsLoggedIn, m.JWTValidator) // Kembalikan Buku
 
 	// Administrator Routes
 	administrator := e.Group("/administrator")

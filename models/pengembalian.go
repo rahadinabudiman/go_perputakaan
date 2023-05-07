@@ -6,10 +6,8 @@ import (
 
 type Pengembalian struct {
 	gorm.Model
-	NIM       int       `json:"nim" form:"nim"`
-	Mahasiswa Mahasiswa `json:"mahasiswa"`
-	Judul     string    `json:"judul" form:"judul"`
-	Buku      Buku      `json:"buku"`
+	NIM   int    `json:"nim" form:"nim" validate:"required"`
+	Judul string `json:"judul" form:"judul" validate:"required"`
 }
 
 // For Response Peminjaman
