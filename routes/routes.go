@@ -58,7 +58,7 @@ func New() *echo.Echo {
 	// Pinjaman Buku
 	administrator.GET("/pinjam", controllers.GetPeminjamansController, m.IsLoggedIn, m.IsAdmin)
 	administrator.GET("/pinjam/:id", controllers.GetPeminjamanByIdController, m.IsLoggedIn, m.IsAdmin)
-	administrator.POST("/pinjam", controllers.CreatePeminjamanController, m.IsLoggedIn, m.IsAdmin)
+	administrator.POST("/pinjam", controllers.CreatePeminjamanAdminController, m.IsLoggedIn, m.IsAdmin, m.JWTValidatorAdmin)
 	administrator.PUT("/pinjam/:id", controllers.UpdatePeminjamanController, m.IsLoggedIn, m.IsAdmin)
 	administrator.DELETE("/pinjam/:id", controllers.DeletePeminjamanController, m.IsLoggedIn, m.IsAdmin)
 
