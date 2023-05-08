@@ -65,6 +65,16 @@ func GetPeminjamanByTitleNIM(nim, title any) (peminjaman models.Peminjaman, err 
 	return peminjaman, nil
 }
 
+func GetPeminjamanByTitle(nim any) (peminjaman models.Peminjaman, err error) {
+	err = config.DB.Table("peminjamen").Where("nim = ?", nim).Find(&peminjaman).Error
+
+	if err != nil {
+		return models.Peminjaman{}, err
+	}
+
+	return peminjaman, nil
+}
+
 func UpdateStatusPeminjaman(peminjaman models.Peminjaman, id any) (models.Peminjaman, error) {
 	err := config.DB.Table("peminjamen").Where("id = ?", id).Updates(&peminjaman).Error
 

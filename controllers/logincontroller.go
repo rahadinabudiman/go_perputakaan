@@ -14,6 +14,12 @@ func LoginMahasiswaController(c echo.Context) error {
 	mahasiswa := models.Mahasiswa{}
 	c.Bind(&mahasiswa)
 
+	if mahasiswa.NIM == 0 || mahasiswa.Password == "" {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: "Data tidak boleh kosong",
+		})
+	}
+
 	mahasiswa, err := database.LoginMahasiswa(mahasiswa)
 
 	if err != nil {

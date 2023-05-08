@@ -25,8 +25,9 @@ func New() *echo.Echo {
 	mahasiswa.POST("", controllers.CreateMahasiswaController)                  // Create Mahasiswa
 	mahasiswa.PUT("/:id", controllers.UpdateMahasiswaController, m.IsLoggedIn) // Edit Mahasiswa
 
-	mahasiswa.GET("/buku", controllers.GetBukusController, m.IsLoggedIn)    // Get All Buku
-	mahasiswa.GET("/buku/:id", controllers.GetBukuController, m.IsLoggedIn) // Get Buku by ID
+	mahasiswa.GET("/buku", controllers.GetBukusController, m.IsLoggedIn)                  // Get All Buku
+	mahasiswa.GET("/buku/:id", controllers.GetBukuController, m.IsLoggedIn)               // Get Buku by ID
+	mahasiswa.GET("/buku/title/:title", controllers.GetBukuTitleController, m.IsLoggedIn) // Get Buku by ID
 
 	mahasiswa.POST("/pinjam", controllers.CreatePeminjamanController, m.IsLoggedIn, m.JWTValidator) // Pinjam Buku
 

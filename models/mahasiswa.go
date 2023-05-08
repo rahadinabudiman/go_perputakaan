@@ -21,6 +21,11 @@ type Mahasiswa struct {
 	Status   string `json:"status" form:"status" gorm:"type:enum('0', '1');default:'0'; not-null"`
 }
 
+type MahasiswaLogin struct {
+	NIM      string `json:"nim" form:"nim" validate:"required"`
+	Password string `json:"password" form:"password" validate:"required"`
+}
+
 // For Response
 type MahasiswaResponse struct {
 	gorm.Model

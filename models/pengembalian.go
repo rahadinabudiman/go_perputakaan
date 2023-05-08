@@ -7,7 +7,7 @@ import (
 type Pengembalian struct {
 	gorm.Model
 	NIM   int    `json:"nim" form:"nim" validate:"required"`
-	Judul string `json:"judul" form:"judul" validate:"required"`
+	Judul string `json:"judul" form:"judul"`
 }
 
 // For Response Peminjaman

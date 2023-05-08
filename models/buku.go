@@ -10,3 +10,12 @@ type Buku struct {
 	ISBN         int    `json:"isbn" form:"isbn" validate:"required"`
 	Stock        int    `json:"stock" form:"stock" validate:"required"`
 }
+
+// For Response Buku
+type BukuResponse struct {
+	Judul        string `json:"judul" form:"judul" validate:"required"`
+	Penulis      string `json:"penulis" form:"penulis" validate:"required"`
+	Tahun_terbit string `json:"tahun_terbit" form:"tahun_terbit" validate:"required"`
+	ISBN         int    `json:"isbn" form:"isbn" validate:"required"`
+	Stock        int    `json:"stock" form:"stock" validate:"required"`
+}

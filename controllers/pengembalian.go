@@ -66,7 +66,7 @@ func CreatePengembalianController(c echo.Context) error {
 	}
 
 	// Check Apakah Mahasiswa Tersebut Meminjam Atau Tidak
-	peminjaman, err := database.GetPeminjamanByTitleNIM(pengembalian.NIM, pengembalian.Judul)
+	peminjaman, err := database.GetPeminjamanByTitle(pengembalian.NIM)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
@@ -103,7 +103,7 @@ func CreatePengembalianController(c echo.Context) error {
 	}
 
 	// Kurangi Stock Buku Saat Berhasil Dipinjam
-	buku, err := database.GetBukuByJudul(pengembalian.Judul)
+	buku, err := database.GetBukuByJudul(peminjaman.Judul)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
@@ -118,12 +118,12 @@ func CreatePengembalianController(c echo.Context) error {
 	}
 
 	buku.Stock++
-	if _, err := database.UpdateBukuStockTitle(buku, pengembalian.Judul); err != nil {
+	if _, err := database.UpdateBukuStockTitle(buku, peminjaman.Judul); err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{
 			Message: err.Error(),
 		})
 	}
-
+	pengembalian.Judul = peminjaman.Judul
 	pengembalian, err = database.CreatePengembalian(pengembalian)
 
 	if err != nil {

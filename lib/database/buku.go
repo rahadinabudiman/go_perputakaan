@@ -73,6 +73,17 @@ func GetBukuByJudul(judul string) (models.Buku, error) {
 	return buku, nil
 }
 
+func GetBukuAllJudul(judul string) ([]models.Buku, error) {
+	var buku []models.Buku
+
+	err := config.DB.Where("judul LIKE ?", "%"+judul+"%").Find(&buku).Error
+
+	if err != nil {
+		return nil, err
+	}
+	return buku, nil
+}
+
 func DeleteBuku(id any) (interface{}, error) {
 	err := config.DB.Where("id = ?", id).Delete(&models.Buku{}).Error
 

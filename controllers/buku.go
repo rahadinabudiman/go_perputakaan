@@ -47,6 +47,30 @@ func GetBukuController(c echo.Context) error {
 	})
 }
 
+func GetBukuTitleController(c echo.Context) error {
+	title := c.Param("title")
+
+	bukus, err := database.GetBukuAllJudul(title)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, models.Response{
+			Message: err.Error(),
+		})
+	}
+
+	var responseBuku []*models.BukuResponse
+	for _, buku := range bukus {
+		responseBuku = append(responseBuku, &models.BukuResponse{
+			Judul:        buku.Judul,
+			Penulis:      buku.Penulis,
+			ISBN:         buku.ISBN,
+			Tahun_terbit: buku.Tahun_terbit,
+			Stock:        buku.Stock,
+		})
+	}
+	return c.JSON(http.StatusOK, responseBuku)
+}
+
 func CreateBukuController(c echo.Context) error {
 	buku := models.Buku{}
 	c.Bind(&buku)
