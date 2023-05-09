@@ -3,7 +3,7 @@ package routes
 import (
 	"go_perpustakaan/controllers"
 	m "go_perpustakaan/middlewares"
-	"go_perpustakaan/models"
+	"go_perpustakaan/util"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo"
@@ -13,7 +13,7 @@ func New() *echo.Echo {
 	e := echo.New()
 
 	m.Log(e)
-	cv := &models.CustomValidator{Validators: validator.New()}
+	cv := &util.CustomValidator{Validators: validator.New()}
 	e.Validator = cv
 
 	// All Routes
